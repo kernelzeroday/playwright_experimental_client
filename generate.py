@@ -33,8 +33,8 @@ def run(playwright) -> None:
     page = context.new_page()
     page.goto("https://test.nicehash.com/docs/rest")
 
-    # Click the "Expand Operations" button to expand all sections
-    page.click("#expandOperations")
+    # Wait for the .operation elements to appear on the page
+    page.wait_for_selector(".operation", timeout=60000)
 
     api_sections = page.query_selector_all(".operation-details")
 
