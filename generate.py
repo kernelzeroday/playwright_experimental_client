@@ -28,13 +28,12 @@ class NiceHashAPIClient:
     return code
 
 def run(playwright) -> None:
-    browser = playwright.chromium.launch(headless=True)  # Change to True for headless mode
+    browser = playwright.chromium.launch(headless=True)
     context = browser.new_context()
     page = context.new_page()
     page.goto("https://test.nicehash.com/docs/rest")
 
-    api_sections_locator = page.locator(".operation-details")
-    api_sections = api_sections_locator.element_handles()
+    api_sections = page.query_selector_all(".operation-details")
 
     api_endpoints = []
 
@@ -42,7 +41,7 @@ def run(playwright) -> None:
         endpoint = {
             'path': section.get_attribute("data-path"),
             'method': section.get_attribute("data-method"),
-            'parameters': [param.inner_text() for param in section.locator(".parameter__name")]
+            'parameters': [param.inner_text() for param in section.query_selector_all(".parameter__name")]
         }
         api_endpoints.append(endpoint)
 
